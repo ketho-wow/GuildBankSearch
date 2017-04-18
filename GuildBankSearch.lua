@@ -423,7 +423,10 @@ function NS.Frame:OnShow ()
 	GuildBankTab1:SetPoint( "TOPLEFT", NS.Frame, "TOPRIGHT", -8, -2 );
 	-- Query contents of all bank tabs for tab button filtering
 	for Tab = 1, GetNumGuildBankTabs() do
-		QueryGuildBankTab( Tab );
+		local _, _, canView = GetGuildBankTabInfo(tab);
+		if canView then
+			QueryGuildBankTab( Tab );
+		end
 	end
 
 	NS.FilterUpdate( true );
