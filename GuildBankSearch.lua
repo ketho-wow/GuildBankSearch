@@ -49,8 +49,8 @@ NS.Filter = Filter;
 NS.Qualities = {};
 NS.Types = {};
 
-for Index = 0, NUM_LE_ITEM_CLASSS-1 do
-	NS.Types[ Index ] = GetItemClassInfo( Index );
+for Index = 1, NUM_LE_ITEM_CLASSS do
+	NS.Types[ Index ] = GetItemClassInfo( Index-1 );
 end
 
 NS.SubTypes = {};
@@ -466,8 +466,8 @@ end
 -- Fill in and sort subtypes
 for Index, Type in ipairs( NS.Types ) do
 	NS.SubTypes[ Type ] = { };
-	for SubIndex, SubValue in pairs( { GetAuctionItemSubClasses( Index ) } ) do
-		NS.SubTypes[ Type ] [ SubIndex ] = GetItemSubClassInfo( Index, SubValue );
+	for SubIndex, SubValue in ipairs( { GetAuctionItemSubClasses( Index-1 ) } ) do
+		NS.SubTypes[ Type ] [ SubIndex ] = GetItemSubClassInfo( Index-1, SubValue );
 	end
 	sort( NS.SubTypes[ Type ] );
 end
