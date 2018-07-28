@@ -1,4 +1,4 @@
-## Interface: 70200
+## Interface: 80000
 ## Title: GuildBank|cffccccccSearch|r
 ## Notes: Adds a search filter to the guild bank.
 ## Notes-frFR: Ajoute un filtre de recherche à la banque de guilde.
@@ -20,4 +20,5 @@ Locales\Locale-frFR.lua
 Locales\Locale-koKR.lua
 Locales\Locale-zhTW.lua
 
+UIDropDownMenu.lua
 GuildBankSearch.lua

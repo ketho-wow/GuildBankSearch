@@ -417,7 +417,7 @@ end
 
 --- Makes room for the filter pane and refreshes the filter when shown.
 function NS.Frame:OnShow ()
-	PlaySound( "igCharacterInfoOpen" );
+	PlaySound( SOUNDKIT.IG_CHARACTER_INFO_OPEN );
 	NS.ToggleButton:SetButtonState( "PUSHED", true );
 	GuildBankTab1:ClearAllPoints();
 	GuildBankTab1:SetPoint( "TOPLEFT", NS.Frame, "TOPRIGHT", -8, -2 );
@@ -433,7 +433,7 @@ function NS.Frame:OnShow ()
 end
 --- Undoes changes to bank window and clears any filter display when hidden.
 function NS.Frame:OnHide ()
-	PlaySound( "igCharacterInfoClose" );
+	PlaySound( SOUNDKIT.IG_CHARACTER_INFO_CLOSE );
 	NS.ToggleButton:SetButtonState( "NORMAL" );
 	GuildBankTab1:ClearAllPoints();
 	GuildBankTab1:SetPoint( "TOPLEFT", GuildBankFrame, "TOPRIGHT", -1, -32 );
