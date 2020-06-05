@@ -469,7 +469,7 @@ end
 -- Fill in and sort subtypes
 for Index, Type in ipairs( NS.Types ) do
 	NS.SubTypes[ Type ] = { };
-	for SubIndex, SubValue in ipairs( { GetAuctionItemSubClasses( Index-1 ) } ) do
+	for SubIndex, SubValue in ipairs( C_AuctionHouse.GetAuctionItemSubClasses( Index-1 ) ) do
 		NS.SubTypes[ Type ] [ SubIndex ] = GetItemSubClassInfo( Index-1, SubValue );
 	end
 	sort( NS.SubTypes[ Type ] );

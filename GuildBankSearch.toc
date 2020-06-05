@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 80300
 ## Title: GuildBank|cffccccccSearch|r
 ## Notes: Adds a search filter to the guild bank.
 ## Notes-frFR: Ajoute un filtre de recherche à la banque de guilde.
@@ -13,6 +13,8 @@
 ## LoadOnDemand: 1
 ## LoadWith: Blizzard_GuildBankUI
 ## RequiredDeps: Blizzard_GuildBankUI
+## X-Curse-Project-ID: 19630
+## X-WoWI-ID: 9448
 
 # See http://wow.curseforge.com/addons/guild-bank-search/localization/
 Locales\Locale-enUS.lua
