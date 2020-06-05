@@ -3,7 +3,7 @@
 ## Notes: Adds a search filter to the guild bank.
 ## Notes-frFR: Ajoute un filtre de recherche à la banque de guilde.
 ## Notes-koKR: 길드 금고에 검색 필터를 추가합니다.
-## Author: Saiket
+## Author: Saiket, Ketho
 ## X-Credits: Harros (Original author)
 ## X-Credits-enTW: Localization: jyuny1
 ## X-Credits-frFR: Localization: Nodd, contrebasse
