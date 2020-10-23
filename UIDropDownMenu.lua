@@ -1,26 +1,33 @@
--- https://www.townlong-yak.com/bugs/afKy4k-HonorFrameLoadTaint
-if (UIDROPDOWNMENU_VALUE_PATCH_VERSION or 0) < 2 then
-	UIDROPDOWNMENU_VALUE_PATCH_VERSION = 2
+local function purgeKey(t, k)
+	t[k] = nil
+	local c = 42
+	repeat
+		if t[c] == nil then
+			t[c] = nil
+		end
+		c = c + 1
+	until issecurevariable(t, k)
+end
+
+-- https://www.townlong-yak.com/bugs/Mx7CWN-RefreshOverread
+if (tonumber(UIDD_REFRESH_OVERREAD_PATCH_VERSION) or 0) < 3 then
+	UIDD_REFRESH_OVERREAD_PATCH_VERSION = 3
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function()
-		if UIDROPDOWNMENU_VALUE_PATCH_VERSION ~= 2 then
+		if UIDD_REFRESH_OVERREAD_PATCH_VERSION ~= 3 then
 			return
 		end
 		for i=1, UIDROPDOWNMENU_MAXLEVELS do
-			for j=1, UIDROPDOWNMENU_MAXBUTTONS do
-				local b = _G["DropDownList" .. i .. "Button" .. j]
-				if not (issecurevariable(b, "value") or b:IsShown()) then
-					b.value = nil
-					repeat
-						j, b["fx" .. j] = j+1
-					until issecurevariable(b, "value")
-				end
+			for j=1+_G["DropDownList" .. i].numButtons, UIDROPDOWNMENU_MAXBUTTONS do
+				local b, _ = _G["DropDownList" .. i .. "Button" .. j]
+				_ = issecurevariable(b, "checked")      or purgeKey(b, "checked")
+				_ = issecurevariable(b, "notCheckable") or purgeKey(b, "notCheckable")
 			end
 		end
 	end)
 end
 
--- https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeCommunitiesTaint
-if (UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
+-- https://www.townlong-yak.com/bugs/Kjq4hm-DisplayModeTaint
+if (tonumber(UIDROPDOWNMENU_OPEN_PATCH_VERSION) or 0) < 1 then
 	UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
 		if UIDROPDOWNMENU_OPEN_PATCH_VERSION ~= 1 then
@@ -28,11 +35,17 @@ if (UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then
 		end
 		if UIDROPDOWNMENU_OPEN_MENU and UIDROPDOWNMENU_OPEN_MENU ~= frame
 		   and not issecurevariable(UIDROPDOWNMENU_OPEN_MENU, "displayMode") then
-			UIDROPDOWNMENU_OPEN_MENU = nil
-			local t, f, prefix, i = _G, issecurevariable, " \0", 1
-			repeat
-				i, t[prefix .. i] = i + 1
-			until f("UIDROPDOWNMENU_OPEN_MENU")
+				purgeKey(_G, "UIDROPDOWNMENU_OPEN_MENU")
+		end
+	end)
+end
+
+-- https://www.townlong-yak.com/bugs/gXwH4P-IOFrameSelection
+if (tonumber(IOFRAME_SELECTION_PATCH_VERSION) or 0) < 1 then
+	IOFRAME_SELECTION_PATCH_VERSION = 1
+	InterfaceOptionsFrame:HookScript("OnHide", function()
+		if IOFRAME_SELECTION_PATCH_VERSION == 1 then
+			InterfaceOptionsFrameCategories.selection = nil
 		end
 	end)
 end
