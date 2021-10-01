@@ -49,7 +49,7 @@ NS.Filter = Filter;
 NS.Qualities = {};
 NS.Types = {};
 
-for Index = 1, NUM_LE_ITEM_CLASSS do
+for Index = 1, Enum.ItemClassMeta.NumValues do
 	NS.Types[ Index ] = GetItemClassInfo( Index-1 );
 end
 
