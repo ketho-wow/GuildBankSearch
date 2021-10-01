@@ -22,5 +22,5 @@ Locales\Locale-frFR.lua
 Locales\Locale-koKR.lua
 Locales\Locale-zhTW.lua
 
-UIDropDownMenu.lua
+TaintLess.xml
 GuildBankSearch.lua
