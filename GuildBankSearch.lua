@@ -8,6 +8,9 @@ local NS = select( 2, ... );
 GuildBankSearch = NS;
 local L = NS.L;
 
+local MAX_GUILDBANK_SLOTS_PER_TAB = 98;
+local NUM_SLOTS_PER_GUILDBANK_GROUP = 14;
+
 NS.Frame = CreateFrame( "Frame", "GuildBankSearchFrame", GuildBankFrame );
 NS.Frame.UpdateRate = 0.5;
 NS.Frame.NextUpdate = 0;
@@ -488,7 +491,7 @@ end );
 for Index = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
 	local Column = floor( ( Index - 1 ) / NUM_SLOTS_PER_GUILDBANK_GROUP ) + 1;
 	local Slot = ( Index - 1 ) % NUM_SLOTS_PER_GUILDBANK_GROUP + 1;
-	local Button = _G[ "GuildBankColumn"..Column.."Button"..Slot ];
+	local Button = GuildBankFrame["Column"..Column]["Button"..Slot];
 	NS.Buttons[ Index ] = Button;
 	Button.searchOverlay:SetTexture();
 end
@@ -497,10 +500,10 @@ end
 GuildItemSearchBox:Hide();
 GuildBankFrame:UnregisterEvent( "INVENTORY_SEARCH_UPDATE" );
 for Index = 1, MAX_GUILDBANK_TABS do
-	local Tab = _G[ "GuildBankTab"..Index.."Button" ];
+	local Tab = _G[ "GuildBankTab"..Index].Button;
 	NS.Tabs[ Index ] = Tab;
 	Tab:UnregisterEvent( "INVENTORY_SEARCH_UPDATE" );
-	Tab.searchOverlay:SetTexture();
+	Tab.SearchOverlay:SetTexture();
 end
 
 
@@ -649,8 +652,10 @@ InitializeDropdown( NS.Slot, "Slot", L.SLOT ):SetPoint( "TOP", NS.SubType, "BOTT
 
 
 -- Hooks
-hooksecurefunc( "GuildBankFrameTab_OnClick", NS.GuildBankFrameTabOnClick );
-hooksecurefunc( "GuildBankFrame_Update", NS.GuildBankFrameUpdate );
+for i = 1, 4 do
+	_G["GuildBankFrameTab"..i]:HookScript("OnClick", NS.GuildBankFrameTabOnClick );
+end
+hooksecurefunc( GuildBankFrame, "Update", NS.GuildBankFrameUpdate );
 GuildBankMessageFrame.AddMessage = NS.GuildBankMessageFrameAddMessage;
 ChatEdit_InsertLink = NS.ChatEditInsertLink;
 
