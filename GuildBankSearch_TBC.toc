@@ -1,4 +1,4 @@
-## Interface: 90205
+## Interface: 20504
 ## Title: GuildBank|cffccccccSearch|r
 ## Notes: Adds a search filter to the guild bank.
 ## Notes-frFR: Ajoute un filtre de recherche à la banque de guilde.
@@ -10,9 +10,6 @@
 ## X-Credits-koKR: Localization: freshworks
 ## X-Credits-zhTW: Localization: jyuny1
 ## Version: @project-version@
-## LoadOnDemand: 1
-## LoadWith: Blizzard_GuildBankUI
-## RequiredDeps: Blizzard_GuildBankUI
 ## X-Curse-Project-ID: 19630
 ## X-WoWI-ID: 9448
 ## X-Wago-ID: rkGr2MGy

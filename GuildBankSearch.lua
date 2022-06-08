@@ -3,11 +3,16 @@
   * GuildBankSearch.lua - Adds a search filter to the guild bank.              *
   ****************************************************************************]]
 
+local m = {}
+local isBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 
 local NS = select( 2, ... );
 GuildBankSearch = NS;
 local L = NS.L;
 
+-- hacky fix for LoadWith not working in TBC
+-- https://github.com/Stanzilla/WoWUIBugs/issues/223
+function m:OnLoad()
 local MAX_GUILDBANK_SLOTS_PER_TAB = 98;
 local NUM_SLOTS_PER_GUILDBANK_GROUP = 14;
 
@@ -472,8 +477,14 @@ end
 -- Fill in and sort subtypes
 for Index, Type in ipairs( NS.Types ) do
 	NS.SubTypes[ Type ] = { };
-	for SubIndex, SubValue in ipairs( C_AuctionHouse.GetAuctionItemSubClasses( Index-1 ) ) do
-		NS.SubTypes[ Type ] [ SubIndex ] = GetItemSubClassInfo( Index-1, SubValue );
+	if isBCC then
+		for SubIndex, SubValue in ipairs({ GetAuctionItemSubClasses( Index-1 ) }) do
+			NS.SubTypes[ Type ] [ SubIndex ] = GetItemSubClassInfo( Index-1, SubValue );
+		end
+	else
+		for SubIndex, SubValue in ipairs( C_AuctionHouse.GetAuctionItemSubClasses( Index-1 ) ) do
+			NS.SubTypes[ Type ] [ SubIndex ] = GetItemSubClassInfo( Index-1, SubValue );
+		end
 	end
 	sort( NS.SubTypes[ Type ] );
 end
@@ -497,7 +508,9 @@ for Index = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
 end
 
 -- Remove default UI's search functionality
-GuildItemSearchBox:Hide();
+if not isBCC then
+	GuildItemSearchBox:Hide();
+end
 GuildBankFrame:UnregisterEvent( "INVENTORY_SEARCH_UPDATE" );
 for Index = 1, MAX_GUILDBANK_TABS do
 	local Tab = _G[ "GuildBankTab"..Index].Button;
@@ -509,7 +522,11 @@ end
 
 -- Set up filter button
 NS.ToggleButton:SetSize( 100, 21 );
-NS.ToggleButton:SetPoint( "TOPRIGHT", -11, -30 );
+if isBCC then
+	NS.ToggleButton:SetPoint( "TOPRIGHT", -17, -40 );
+else
+	NS.ToggleButton:SetPoint( "TOPRIGHT", -11, -30 );
+end
 NS.ToggleButton:SetText( L.FILTER );
 NS.ToggleButton:SetScript( "OnClick", NS.Toggle );
 
@@ -662,3 +679,17 @@ ChatEdit_InsertLink = NS.ChatEditInsertLink;
 NS.FilterClear();
 wipe( Filter ); -- FilterClear won't fire edit box OnTextChanged handlers, so clear manually.
 NS.FilterUpdate( true );
+end
+
+if isBCC then
+	local function OnEvent(self, event, addon)
+		if addon == "Blizzard_GuildBankUI" then
+			m:OnLoad()
+		end
+	end
+	local f = CreateFrame("Frame")
+	f:RegisterEvent("ADDON_LOADED")
+	f:SetScript("OnEvent", OnEvent)
+else
+	m:OnLoad()
+end
