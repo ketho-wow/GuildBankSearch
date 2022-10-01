@@ -4,7 +4,7 @@
   ****************************************************************************]]
 
 local m = {}
-local isBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
+local isWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 
 local NS = select( 2, ... );
 GuildBankSearch = NS;
@@ -477,7 +477,7 @@ end
 -- Fill in and sort subtypes
 for Index, Type in ipairs( NS.Types ) do
 	NS.SubTypes[ Type ] = { };
-	if isBCC then
+	if isWrath then
 		for SubIndex, SubValue in ipairs({ GetAuctionItemSubClasses( Index-1 ) }) do
 			NS.SubTypes[ Type ] [ SubIndex ] = GetItemSubClassInfo( Index-1, SubValue );
 		end
@@ -508,7 +508,7 @@ for Index = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
 end
 
 -- Remove default UI's search functionality
-if not isBCC then
+if not isWrath then
 	GuildItemSearchBox:Hide();
 end
 GuildBankFrame:UnregisterEvent( "INVENTORY_SEARCH_UPDATE" );
@@ -522,7 +522,7 @@ end
 
 -- Set up filter button
 NS.ToggleButton:SetSize( 100, 21 );
-if isBCC then
+if isWrath then
 	NS.ToggleButton:SetPoint( "TOPRIGHT", -17, -40 );
 else
 	NS.ToggleButton:SetPoint( "TOPRIGHT", -11, -30 );
@@ -681,7 +681,7 @@ wipe( Filter ); -- FilterClear won't fire edit box OnTextChanged handlers, so cl
 NS.FilterUpdate( true );
 end
 
-if isBCC then
+if isWrath then
 	local function OnEvent(self, event, addon)
 		if addon == "Blizzard_GuildBankUI" then
 			m:OnLoad()
