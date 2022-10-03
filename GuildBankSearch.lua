@@ -32,7 +32,7 @@ NS.ItemLevelMax = CreateFrame( "EditBox", "$parentItemLevelMax", NS.Frame, "Inpu
 NS.ReqLevelMin = CreateFrame( "EditBox", "$parentReqLevelMin", NS.Frame, "InputBoxTemplate" );
 NS.ReqLevelMax = CreateFrame( "EditBox", "$parentReqLevelMax", NS.Frame, "InputBoxTemplate" );
 
-NS.CategorySection = CreateFrame( "Frame", "$parentCategory", NS.Frame, "OptionsBoxTemplate" );
+NS.CategorySection = CreateFrame( "Frame", "$parentCategory", NS.Frame );
 NS.Type = CreateFrame( "Frame", "$parentType", NS.CategorySection, "UIDropDownMenuTemplate" );
 NS.SubType = CreateFrame( "Frame", "$parentSubType", NS.CategorySection, "UIDropDownMenuTemplate" );
 NS.Slot = CreateFrame( "Frame", "$parentSlot", NS.CategorySection, "UIDropDownMenuTemplate" );
@@ -318,6 +318,22 @@ do
 			return MatchItemInfo( GetItemInfo( ItemLink ) );
 		end
 	end
+
+	--- @return True if the name matches the player Name filter parameters.
+	local function MatchPlayerInfo ( ... )
+		if ( not FilterFunctions.Name( Filter.Name, ... ) ) then
+			return;
+		end
+		return true; -- Matched all filters
+	end
+	--- Tests a name against the Name filter parameters.
+	-- @param PlayerName  name of a player.
+	-- @return True if the given ItemLink matches all filter parameters.
+	function NS.MatchPlayer ( PlayerName )
+		if ( PlayerName ) then
+			return MatchPlayerInfo( PlayerName );
+		end
+	end
 end
 
 --- Restores an unfiltered view of the bank and log.
@@ -393,6 +409,7 @@ do
 		if ( GuildBankFrame.mode == "log"
 			and NS.Frame:IsShown() and NS.IsFilterDefined()
 			and not NS.MatchItem( Message:match( "|H(item:[^|]+)|h" ) )
+			and not NS.MatchPlayer( Message:match( "^|c%x%x%x%x%x%x%x%x(.-)|r" ) )
 		) then
 			local Color = NS.LogMismatchColor;
 			-- Remove all color codes
@@ -654,7 +671,7 @@ ReqLevelMax.Label:SetPoint( "BOTTOM", ReqLevelMax, "TOP" );
 
 -- Item category section
 local CategorySection = NS.CategorySection;
-_G[ CategorySection:GetName().."Title" ]:SetText( L.ITEM_CATEGORY );
+-- _G[ CategorySection:GetName().."Title" ]:SetText( L.ITEM_CATEGORY );
 CategorySection:SetPoint( "TOP", ItemLevelMin, "BOTTOM", 0, -38 );
 CategorySection:SetPoint( "LEFT", 8, 0 );
 CategorySection:SetPoint( "BOTTOMRIGHT", -16, 16 );
