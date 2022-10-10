@@ -32,7 +32,7 @@ NS.ItemLevelMax = CreateFrame( "EditBox", "$parentItemLevelMax", NS.Frame, "Inpu
 NS.ReqLevelMin = CreateFrame( "EditBox", "$parentReqLevelMin", NS.Frame, "InputBoxTemplate" );
 NS.ReqLevelMax = CreateFrame( "EditBox", "$parentReqLevelMax", NS.Frame, "InputBoxTemplate" );
 
-NS.CategorySection = CreateFrame( "Frame", "$parentCategory", NS.Frame );
+NS.CategorySection = CreateFrame( "Frame", "$parentCategory", NS.Frame, "OptionsBoxTemplate" );
 NS.Type = CreateFrame( "Frame", "$parentType", NS.CategorySection, "UIDropDownMenuTemplate" );
 NS.SubType = CreateFrame( "Frame", "$parentSubType", NS.CategorySection, "UIDropDownMenuTemplate" );
 NS.Slot = CreateFrame( "Frame", "$parentSlot", NS.CategorySection, "UIDropDownMenuTemplate" );
@@ -671,7 +671,7 @@ ReqLevelMax.Label:SetPoint( "BOTTOM", ReqLevelMax, "TOP" );
 
 -- Item category section
 local CategorySection = NS.CategorySection;
--- _G[ CategorySection:GetName().."Title" ]:SetText( L.ITEM_CATEGORY );
+_G[ CategorySection:GetName().."Title" ]:SetText( L.ITEM_CATEGORY );
 CategorySection:SetPoint( "TOP", ItemLevelMin, "BOTTOM", 0, -38 );
 CategorySection:SetPoint( "LEFT", 8, 0 );
 CategorySection:SetPoint( "BOTTOMRIGHT", -16, 16 );
